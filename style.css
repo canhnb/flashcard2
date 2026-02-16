@@ -5,16 +5,6 @@ body {
     padding: 20px;
 }
 
-nav {
-    margin-bottom: 20px;
-}
-
-nav button {
-    padding: 10px 20px;
-    margin-right: 10px;
-    cursor: pointer;
-}
-
 textarea {
     width: 100%;
     height: 80px;
@@ -28,23 +18,34 @@ button {
 }
 
 #card {
-    width: 100%;
-    height: 180px;
-    border: 1px solid #ccc;
+    width: 100vw;              /* full chiều rộng màn hình */
+    height: 60vh;              /* cao 60% màn hình, nhìn đẹp trên mobile */
+    max-width: 100%;           /* không bị giới hạn */
+    margin: 0;
     margin-top: 20px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
+
     background: #fff;
+    border: none;
     cursor: pointer;
     user-select: none;
     transition: transform 0.4s;
-}
 
-#back {
-    display: none;
-    font-size: 20px;
     padding: 10px;
+    box-sizing: border-box;
+}
+#front {
+    font-size: 150px;
+    font-weight: bold;
     text-align: center;
+    line-height: 1.1;
+    word-break: break-word;   /* để chữ dài không tràn */
+}
+#back {
+    font-size: 32px;
+    text-align: center;
+    line-height: 1.4;
 }
