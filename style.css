@@ -18,10 +18,9 @@ button {
 }
 
 #card {
-    width: 100vw;              /* full chiều rộng màn hình */
-    height: 60vh;              /* cao 60% màn hình, nhìn đẹp trên mobile */
-    max-width: 100%;           /* không bị giới hạn */
-    margin: 0;
+    width: 100%;               /* Safari-friendly, không bị lệch như 100vw */
+    height: 60vh;              /* Giữ tỷ lệ đẹp trên mobile */
+    max-width: 100%;           /* Không vượt quá màn hình */
     margin-top: 20px;
 
     display: flex;
@@ -32,17 +31,21 @@ button {
     border: none;
     cursor: pointer;
     user-select: none;
-    transition: transform 0.4s;
 
     padding: 10px;
     box-sizing: border-box;
+
+    position: relative;        /* Safari cần để căn giữa chính xác */
 }
+
 #front {
     font-size: 150px;
     font-weight: bold;
     text-align: center;
     line-height: 1.1;
-    word-break: break-word;   /* để chữ dài không tràn */
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
 }
 #back {
     font-size: 32px;
