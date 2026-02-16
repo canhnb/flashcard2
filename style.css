@@ -1,8 +1,11 @@
 body {
     font-family: Arial;
+    margin: 0;
+    padding: 20px;
+}
+.container {
     max-width: 700px;
     margin: auto;
-    padding: 20px;
 }
 
 textarea {
@@ -18,9 +21,9 @@ button {
 }
 
 #card {
-    width: 100%;               /* Safari-friendly, không bị lệch như 100vw */
-    height: 60vh;              /* Giữ tỷ lệ đẹp trên mobile */
-    max-width: 100%;           /* Không vượt quá màn hình */
+    width: 100vw;              /* full màn hình thật */
+    height: 60vh;
+    margin-left: calc(50% - 50vw); /* fix lệch trên Safari */
     margin-top: 20px;
 
     display: flex;
@@ -34,8 +37,6 @@ button {
 
     padding: 10px;
     box-sizing: border-box;
-
-    position: relative;        /* Safari cần để căn giữa chính xác */
 }
 
 #front {
@@ -47,6 +48,7 @@ button {
     overflow-wrap: break-word;
     max-width: 100%;
 }
+
 #back {
     font-size: 32px;
     text-align: center;
