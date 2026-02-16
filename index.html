@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Flashcard Nhật – Việt</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Flashcard Nhật – Việt</h1>
+
+<nav>
+    <button onclick="showStudy()">Học</button>
+    <button onclick="showManage()">Quản lý</button>
+</nav>
+
+<div class="container">
+
+    <!-- PHẦN HỌC FLASHCARD -->
+    <div id="studySection">
+        <div id="card" onclick="flipCard()">
+            <div id="front"></div>
+            <div id="back"></div>
+        </div>
+        <p>Vuốt trái/phải hoặc nhấn phím ← → để chuyển thẻ</p>
+    </div>
+
+    <!-- PHẦN QUẢN LÝ TỪ VỰNG -->
+<div id="manageSection" style="display:none;">
+    <h2>Quản lý từ vựng</h2>
+
+    <textarea id="wordInput" placeholder="Nhập từ vựng, cách nhau bằng dấu phẩy..."></textarea>
+    <button onclick="addWords()">Thêm từ</button>
+
+    <h3>Danh sách từ đã lưu:</h3>
+    <button onclick="deleteSelected()" style="margin-bottom:10px;">Xóa các từ đã chọn</button>
+
+    <ul id="wordList"></ul>
+</div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
