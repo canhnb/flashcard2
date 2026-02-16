@@ -60,10 +60,16 @@ function startFlashcard() {
 function showFront() {
     if (shuffled.length === 0) return;
 
-    document.getElementById("front").style.display = "block";
-    document.getElementById("back").style.display = "none";
+    const front = document.getElementById("front");
+    const back = document.getElementById("back");
 
-    document.getElementById("front").textContent = shuffled[currentIndex];
+    front.style.display = "block";
+    back.style.display = "none";
+
+    front.textContent = shuffled[currentIndex];
+
+    // Auto-scale chữ
+    autoScaleFrontText();
 }
 
 let showingBack = false;
@@ -193,4 +199,24 @@ function deleteSelected() {
 
     // Reset flashcard
     startFlashcard();
+}
+
+function enterFullscreen() {
+    const elem = document.documentElement;
+
+    if (elem.requestFullscreen) elem.requestFullscreen();
+    else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen(); // Safari
+}
+
+function autoScaleFrontText() {
+    const front = document.getElementById("front");
+    let size = 150; // font-size tối đa
+    front.style.fontSize = size + "px";
+
+    // Giảm dần cho đến khi vừa card
+    while (front.scrollHeight > front.offsetHeight || front.scrollWidth > front.offsetWidth) {
+        size -= 5;
+        if (size < 40) break; // không nhỏ hơn 40px
+        front.style.fontSize = size + "px";
+    }
 }
