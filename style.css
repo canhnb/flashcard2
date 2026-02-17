@@ -53,3 +53,25 @@ button {
     text-align: center;
     line-height: 1.4;
 }
+
+.word-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+}
+
+.word-jp {
+    font-weight: bold;
+    min-width: 80px;
+}
+
+.word-hira {
+    color: #555;
+    min-width: 120px;
+}
+
+.word-vi {
+    color: #008000;
+    flex: 1;
+}
