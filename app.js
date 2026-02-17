@@ -1,4 +1,4 @@
-let words = [];
+let words = []; // mỗi phần tử là { word, hira, meaning }
 let currentIndex = 0;
 let shuffled = [];
 let currentPage = 1;
@@ -26,18 +26,28 @@ function showManage() {
 // -------------------------
 // QUẢN LÝ TỪ VỰNG
 // -------------------------
-function addWords() {
+async function addWords() {
     const input = document.getElementById("wordInput").value.trim();
     if (!input) return;
 
     const newWords = input.split(",").map(w => w.trim()).filter(w => w !== "");
-    words.push(...newWords);
+
+    for (let w of newWords) {
+        const hira = await toHiragana(w);
+        const meaning = await translate(w);
+
+        words.push({
+            word: w,
+            hira: hira,
+            meaning: meaning
+        });
+    }
 
     localStorage.setItem("words", JSON.stringify(words));
+    currentPage = 1;
     renderWordList();
 
     document.getElementById("wordInput").value = "";
-currentPage = 1;
 }
 
 
@@ -158,21 +168,19 @@ async function renderWordList() {
     const end = Math.min(start + pageSize, words.length);
 
     for (let i = start; i < end; i++) {
-        const w = words[i];
+        const item = words[i];
 
-        const hira = await toHiragana(w);
-        const meaning = await translate(w);
 
         const li = document.createElement("li");
 
         li.innerHTML = `
-            <div class="word-row">
-                <input type="checkbox" class="wordCheck" data-index="${i}">
-                <span class="word-jp">${w}</span>
-                <span class="word-hira">${hira}</span>
-                <span class="word-vi">${meaning}</span>
-            </div>
-        `;
+    <div class="word-row">
+        <input type="checkbox" class="wordCheck" data-index="${i}">
+        <span class="word-jp">${item.word}</span>
+        <span class="word-hira">${item.hira}</span>
+        <span class="word-vi">${item.meaning}</span>
+    </div>
+`;
 
         ul.appendChild(li);
     }
@@ -268,4 +276,45 @@ function prevPage() {
         currentPage--;
         renderWordList();
     }
+}
+
+function exportJSON() {
+    const data = JSON.stringify(words, null, 2);
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "flashcard-data.json";
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+
+function importJSON() {
+    const file = document.getElementById("importFile").files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const data = JSON.parse(e.target.result);
+
+            if (!Array.isArray(data)) {
+                alert("File JSON không hợp lệ.");
+                return;
+            }
+
+            words = data;
+            localStorage.setItem("words", JSON.stringify(words));
+            currentPage = 1;
+            renderWordList();
+            startFlashcard();
+
+        } catch (err) {
+            alert("Lỗi đọc file JSON.");
+        }
+    };
+
+    reader.readAsText(file);
 }
