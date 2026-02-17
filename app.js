@@ -318,3 +318,54 @@ function importJSON() {
 
     reader.readAsText(file);
 }
+
+async function upgradeOldData() {
+    let raw = JSON.parse(localStorage.getItem("words") || "[]");
+
+    // Nếu dữ liệu cũ là mảng string
+    if (raw.length > 0 && typeof raw[0] === "string") {
+        const converted = [];
+
+        for (let w of raw) {
+            const hira = await toHiragana(w);
+            const meaning = await translate(w);
+
+            converted.push({
+                word: w,
+                hira: hira,
+                meaning: meaning
+            });
+        }
+
+        // Lưu lại dạng mới
+        localStorage.setItem("words", JSON.stringify(converted));
+        words = converted;
+
+        alert("Đã chuyển dữ liệu cũ sang dạng mới!");
+    } else {
+        alert("Dữ liệu đã ở dạng mới, không cần chuyển.");
+    }
+
+    renderWordList();
+    startFlashcard();
+}
+
+
+function exportLocalStorageToJSON() {
+    const raw = localStorage.getItem("words");
+    if (!raw) {
+        alert("Không có dữ liệu để xuất.");
+        return;
+    }
+
+    const blob = new Blob([raw], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "flashcard-data.json";
+    a.click();
+
+    URL.revokeObjectURL(url);
+localStorage.removeItem("words");
+}
