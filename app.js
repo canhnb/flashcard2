@@ -156,22 +156,41 @@ document.addEventListener("keydown", e => {
 // Khởi động flashcard
 startFlashcard();
 
-function renderWordList() {
+async function renderWordList() {
     const ul = document.getElementById("wordList");
     ul.innerHTML = "";
 
-    words.forEach((w, index) => {
+    for (let i = 0; i < words.length; i++) {
+        const w = words[i];
+
+        // Tạo li
         const li = document.createElement("li");
+        li.style.marginBottom = "8px";
+
+        // Checkbox
+        const check = `<input type="checkbox" class="wordCheck" data-index="${i}">`;
+
+        // Lấy hiragana + nghĩa
+        const hira = await toHiragana(w);
+        const meaning = await translate(w);
 
         li.innerHTML = `
-            <input type="checkbox" class="wordCheck" data-index="${index}">
-            <span>${w}</span>
+            ${check}
+            <b>${w}</b>
+            <br>
+            <span style="color:#555;">${hira}</span>
+            <br>
+            <span style="color:#008000;">${meaning}</span>
         `;
 
         ul.appendChild(li);
-    });
+    }
 }
 
+function toggleCheckAll() {
+    const checked = document.getElementById("checkAll").checked;
+    document.querySelectorAll(".wordCheck").forEach(c => c.checked = checked);
+}
 
 function deleteSelected() {
     const checks = document.querySelectorAll(".wordCheck:checked");
