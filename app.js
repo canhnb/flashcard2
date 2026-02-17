@@ -1,6 +1,8 @@
 let words = [];
 let currentIndex = 0;
 let shuffled = [];
+let currentPage = 1;
+const pageSize = 100;
 
 // Load saved words
 if (localStorage.getItem("words")) {
@@ -35,6 +37,7 @@ function addWords() {
     renderWordList();
 
     document.getElementById("wordInput").value = "";
+currentPage = 1;
 }
 
 function renderWordList() {
@@ -160,7 +163,10 @@ async function renderWordList() {
     const ul = document.getElementById("wordList");
     ul.innerHTML = "";
 
-    for (let i = 0; i < words.length; i++) {
+    const start = (currentPage - 1) * pageSize;
+    const end = Math.min(start + pageSize, words.length);
+
+    for (let i = start; i < end; i++) {
         const w = words[i];
 
         const hira = await toHiragana(w);
@@ -179,7 +185,10 @@ async function renderWordList() {
 
         ul.appendChild(li);
     }
+
+    renderPagination();
 }
+
 
 function toggleCheckAll() {
     const checked = document.getElementById("checkAll").checked;
@@ -212,6 +221,7 @@ function deleteSelected() {
 
     // Reset flashcard
     startFlashcard();
+currentPage = 1;
 }
 
 function enterFullscreen() {
@@ -231,5 +241,40 @@ function autoScaleFrontText() {
         size -= 5;
         if (size < 40) break; // không nhỏ hơn 40px
         front.style.fontSize = size + "px";
+    }
+}
+
+function totalPages() {
+    return Math.ceil(words.length / pageSize);
+}
+
+function renderPagination() {
+    const div = document.getElementById("pagination");
+    const total = totalPages();
+
+    if (total <= 1) {
+        div.innerHTML = "";
+        return;
+    }
+
+    div.innerHTML = `
+        <button onclick="prevPage()" ${currentPage === 1 ? "disabled" : ""}>Trang trước</button>
+        <span style="margin: 0 10px;">Trang ${currentPage} / ${total}</span>
+        <button onclick="nextPage()" ${currentPage === total ? "disabled" : ""}>Trang sau</button>
+    `;
+}
+
+
+function nextPage() {
+    if (currentPage < totalPages()) {
+        currentPage++;
+        renderWordList();
+    }
+}
+
+function prevPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        renderWordList();
     }
 }
