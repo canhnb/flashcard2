@@ -2,7 +2,7 @@ let words = [];
 let currentIndex = 0;
 let shuffled = [];
 let currentPage = 1;
-const pageSize = 100;
+const pageSize = 50;
 
 // Load saved words
 if (localStorage.getItem("words")) {
@@ -40,15 +40,6 @@ function addWords() {
 currentPage = 1;
 }
 
-function renderWordList() {
-    const ul = document.getElementById("wordList");
-    ul.innerHTML = "";
-    words.forEach(w => {
-        const li = document.createElement("li");
-        li.textContent = w;
-        ul.appendChild(li);
-    });
-}
 
 // -------------------------
 // FLASHCARD
