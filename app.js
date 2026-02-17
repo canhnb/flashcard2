@@ -163,24 +163,18 @@ async function renderWordList() {
     for (let i = 0; i < words.length; i++) {
         const w = words[i];
 
-        // Tạo li
-        const li = document.createElement("li");
-        li.style.marginBottom = "8px";
-
-        // Checkbox
-        const check = `<input type="checkbox" class="wordCheck" data-index="${i}">`;
-
-        // Lấy hiragana + nghĩa
         const hira = await toHiragana(w);
         const meaning = await translate(w);
 
+        const li = document.createElement("li");
+
         li.innerHTML = `
-            ${check}
-            <b>${w}</b>
-            <br>
-            <span style="color:#555;">${hira}</span>
-            <br>
-            <span style="color:#008000;">${meaning}</span>
+            <div class="word-row">
+                <input type="checkbox" class="wordCheck" data-index="${i}">
+                <span class="word-jp">${w}</span>
+                <span class="word-hira">${hira}</span>
+                <span class="word-vi">${meaning}</span>
+            </div>
         `;
 
         ul.appendChild(li);
