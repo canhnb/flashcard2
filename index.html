@@ -34,9 +34,17 @@
     <button onclick="addWords()">Thêm từ</button>
 
     <h3>Danh sách từ đã lưu:</h3>
-    <button onclick="deleteSelected()" style="margin-bottom:10px;">Xóa các từ đã chọn</button>
 
-    <ul id="wordList"></ul>
+<label>
+    <input type="checkbox" id="checkAll" onclick="toggleCheckAll()">
+    Chọn tất cả
+</label>
+
+<button onclick="deleteSelected()" style="margin-left:10px; margin-bottom:10px;">
+    Xóa các từ đã chọn
+</button>
+
+<ul id="wordList"></ul>
 </div>
 
 </div>
